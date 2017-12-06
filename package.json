@@ -1,22 +1,17 @@
 {
-	"name": "react-native-caller-id",
+	"name": "react-native-caller-id-android",
 	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest"
+	"description": "Module for definition of incoming call",
+	"main": "index",
+	"author": {
+		"name": "ceanyd",
+		"email": "poythn@gmail.com",
+		"url": "https://github.com/ceanyd/react-native-caller-id-android"
 	},
-	"dependencies": {
-		"react": "16.0.0",
-		"react-native": "0.50.4"
-	},
-	"devDependencies": {
-		"babel-jest": "21.2.0",
-		"babel-preset-react-native": "4.0.0",
-		"jest": "21.2.1",
-		"react-test-renderer": "16.0.0"
-	},
-	"jest": {
-		"preset": "react-native"
+	"license": "MIT",
+	"contributors": [],
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:ceanyd/react-native-caller-id-android.git"
 	}
 }
