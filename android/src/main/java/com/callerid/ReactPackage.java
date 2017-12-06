@@ -1,4 +1,4 @@
-package com.callerid.notif;
+package com.callerid;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
@@ -20,7 +20,8 @@ public class AddPermissionsReactPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new AddPermissions(reactContext));
+        modules.add(new AddPermissionsReactModule(reactContext));
+        modules.add(new UsersDBReactModule(reactContext));
 
         return modules;
     }

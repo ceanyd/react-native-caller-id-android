@@ -49,11 +49,4 @@ public class InCallServiceImplementation extends InCallService {
 //        System.out.println("********onBringToForeground*******");
 //    }
 
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        final Context context = getApplicationContext();
-//        System.out.println("********onBind*******");
-//        return super.onBind(intent);
-//    }
-
 }

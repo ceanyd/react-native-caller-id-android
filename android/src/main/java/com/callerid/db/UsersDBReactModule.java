@@ -15,7 +15,7 @@ import java.util.List;
 //import android.widget.Toast;
 
 
-public class UsersDB extends ReactContextBaseJavaModule {
+public class UsersDBReactModule extends ReactContextBaseJavaModule {
 
     @Override
     public String getName() {
