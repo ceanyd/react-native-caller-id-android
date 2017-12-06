@@ -1,0 +1,17 @@
+build/
+.idea
+.gradle
+gradlew
+gradlew.bat
+gradle/
+*.properties
+*.iml
+
+android/app/libs
+android/keystores/debug.keystore
+*.keystore
+
+node_modules/
+npm-debug.log
+
+_tmp/
