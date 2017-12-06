@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AddPermissionsReactPackage implements ReactPackage {
+public class CallerIDReactPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
@@ -20,8 +20,8 @@ public class AddPermissionsReactPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new AddPermissionsReactModule(reactContext));
-        modules.add(new UsersDBReactModule(reactContext));
+        modules.add(new AddPermissions(reactContext));
+        modules.add(new UsersDB(reactContext));
 
         return modules;
     }
