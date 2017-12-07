@@ -1,14 +1,17 @@
-node_modules/**/*
-build
-BVLinearGradient.xcodeproj/xcuserdata/**/*
-BVLinearGradient.xcodeproj/project.xcworkspace/**/*
+build/
 .idea
-.gradle/
+.gradle
 gradlew
 gradlew.bat
 gradle/
 *.properties
 *.iml
+
+android/app/libs
+android/keystores/debug.keystore
+*.keystore
+
+node_modules/
 npm-debug.log
 
 _tmp/
