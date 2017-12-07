@@ -15,7 +15,8 @@ const callerId = {
         Alert.alert("Notification access",
             "For proper work of Caller ID the application needs access to be given in settings",
             [{text: "Ok",
-              onPress: () => NativeModules.AddPermissions.notificationsAccess()}]);
+              onPress: () => NativeModules.AddPermissions.notificationsAccess()}],
+            { cancelable: false });
       })
     }).catch(e => rej(e))),
 
