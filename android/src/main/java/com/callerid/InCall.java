@@ -89,7 +89,7 @@ public class InCall extends AppCompatActivity {
                 ImageButton btnMute = (ImageButton) findViewById(R.id.btnMute);
                 GradientDrawable bgShape = (GradientDrawable) btnMute.getBackground();
                 if (state) {
-                    bgShape.setColor(Color.parseColor("#3F51B5"));
+                    bgShape.setColor(Color.parseColor("#7A7A7A"));
                 } else {
                     bgShape.setColor(Color.parseColor("#00000000"));
                 }
@@ -121,9 +121,9 @@ public class InCall extends AppCompatActivity {
                 ImageButton btnMute = (ImageButton) findViewById(R.id.btnSpeaker);
                 GradientDrawable bgShape = (GradientDrawable) btnMute.getBackground();
                 if (state) {
-                    bgShape.setColor(Color.parseColor("#3F51B5"));
-                } else {
                     bgShape.setColor(Color.parseColor("#7A7A7A"));
+                } else {
+                    bgShape.setColor(Color.parseColor("#00000000"));
                 }
             }
         });

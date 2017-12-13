@@ -27,12 +27,12 @@ public class UsersDB extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void upload(String options, Callback callback) {
+    public void upload(String options, String passPhrase, Callback callback) {
         try {
             long startTime = System.nanoTime();
             List<User> newUsers = new ArrayList<>();
             JSONArray arr = new JSONArray(options);
-            DataBase database = DataBase.getDatabase(getReactApplicationContext());
+            DataBase database = DataBase.getDatabase(getReactApplicationContext(), passPhrase);
             database.userDao().removeAllUsers();
             for (int i=0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);

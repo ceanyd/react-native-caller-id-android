@@ -23,8 +23,6 @@ public abstract class MainService extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
-        System.out.println("--------------");
-        System.out.println(NotificationManagerCompat.getEnabledListenerPackages(context.getApplicationContext()).contains(context.getPackageName()));
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
             savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
         }

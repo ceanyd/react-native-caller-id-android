@@ -91,7 +91,7 @@ public class CallReceiver extends MainService {
     protected void onIncomingCallReceived(Context ctx, String number, Date start, Intent intent)
     {
         isCallingEnded = false;
-        database = DataBase.getDatabase(ctx);
+        database = DataBase.getDatabase(ctx, null);
         User user = database.userDao().getUserByNumber(number);
 
         if (null != user) {
@@ -131,7 +131,7 @@ public class CallReceiver extends MainService {
         isCallingEnded = false;
         NotificationReceiverService.onCallInEnded();
 
-        database = DataBase.getDatabase(ctx);
+        database = DataBase.getDatabase(ctx, null);
         User user = database.userDao().getUserByNumber(number);
         CustomNotification.cancel(ctx);
 
@@ -174,7 +174,7 @@ public class CallReceiver extends MainService {
         isCallingEnded = true;
         NotificationReceiverService.onCallInEnded();
 
-        database = DataBase.getDatabase(ctx);
+        database = DataBase.getDatabase(ctx, null);
         User user = database.userDao().getUserByNumber(number);
 
         CustomNotification.cancel(ctx);
