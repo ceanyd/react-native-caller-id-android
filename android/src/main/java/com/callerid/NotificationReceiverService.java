@@ -15,6 +15,7 @@ public class NotificationReceiverService extends NotificationListenerService {
 
     Context context;
     static boolean isCallIn;
+    static boolean isMissed;
     static String name = "Undefined";
     static String number;
 
@@ -35,14 +36,25 @@ public class NotificationReceiverService extends NotificationListenerService {
 //        registerReceiver(nrec, filter);
     }
 
-    static public void onCallIn(String n, String num) {
-        isCallIn = true;
-        name = n;
-        number = num;
-    }
-
-    static public void onCallInEnded() {
-        isCallIn = false;
+    static public void update(String type, String n, String num) {
+        switch(type) {
+            case "received":
+                isCallIn = true;
+                isMissed = true;
+                name = n;
+                number = num;
+                break;
+            case "answered":
+                if (isCallIn) isMissed = false;
+                isCallIn = false;
+                break;
+            case "ended":
+                isCallIn = false;
+                break;
+            case "missed":
+                isCallIn = false;
+                break;
+        }
     }
 
 //    @Override
@@ -123,6 +135,8 @@ public class NotificationReceiverService extends NotificationListenerService {
                         });
                     }
                 } else if (missingExtraText.equals(extras.getString(Notification.EXTRA_TEXT)) | missingExtraText.equals(extras.getString(Notification.EXTRA_TITLE))) {
+                    if(isMissed) {
+                        isMissed = false;
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
@@ -130,6 +144,7 @@ public class NotificationReceiverService extends NotificationListenerService {
                                 notification.showMiss();
                             }
                         });
+                    }
                 }
 
             }

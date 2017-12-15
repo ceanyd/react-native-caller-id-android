@@ -94,7 +94,7 @@ public class CallReceiver extends MainService {
         User user = database.userDao().getUserByNumber(number);
 
         if (null != user) {
-            NotificationReceiverService.onCallIn(user.name, number);
+            NotificationReceiverService.update("received", user.name, number);
 
             KeyguardManager myKM = (KeyguardManager) ctx.getSystemService(Context.KEYGUARD_SERVICE);
             Boolean lll = myKM.inKeyguardRestrictedInputMode();
@@ -128,7 +128,7 @@ public class CallReceiver extends MainService {
     protected void onIncomingCallAnswered(Context ctx, String number, Date start, Intent intent)
     {
         isCallingEnded = false;
-        NotificationReceiverService.onCallInEnded();
+        NotificationReceiverService.update("answered", null, null);
 
         database = DataBase.getDatabase(ctx, null);
         User user = database.userDao().getUserByNumber(number);
@@ -151,7 +151,7 @@ public class CallReceiver extends MainService {
     protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end)
     {
         isCallingEnded = true;
-        NotificationReceiverService.onCallInEnded();
+        NotificationReceiverService.update("ended", null, null);
         CustomNotification.cancel(ctx);
         Intent i = new Intent("FINISH_ACTIVITY");
         ctx.sendBroadcast(i);
@@ -171,7 +171,7 @@ public class CallReceiver extends MainService {
     protected void onMissedCall(Context ctx, String number, Date start)
     {
         isCallingEnded = true;
-        NotificationReceiverService.onCallInEnded();
+        NotificationReceiverService.update("missed", null, null);
 
         database = DataBase.getDatabase(ctx, null);
         User user = database.userDao().getUserByNumber(number);
