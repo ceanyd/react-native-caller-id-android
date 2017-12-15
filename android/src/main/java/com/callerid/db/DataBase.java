@@ -53,7 +53,7 @@ public abstract class DataBase extends RoomDatabase {
     private static final String cipherInstance = "AES/GCM/NoPadding";
     private static SharedPreferences prefs = null;
 
-//    private final static String generateRandomChars(String candidateChars, int length) {
+    //    private final static String generateRandomChars(String candidateChars, int length) {
 //        StringBuilder sb = new StringBuilder();
 //        Random random = new Random();
 //        for (int i = 0; i < length; i++) {
@@ -63,6 +63,33 @@ public abstract class DataBase extends RoomDatabase {
 //
 //        return sb.toString();
 //    }
+    static public KeyStore.SecretKeyEntry getSecretKeyEntry (String alias) {
+        KeyStore.SecretKeyEntry secretKeyEntry = null;
+        try {
+            KeyStore keyStore = KeyStore.getInstance(keyStoreInstance);
+            keyStore.load(null);
+
+            secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null);
+        } catch (Exception e) {
+            Log.e("Exception", Log.getStackTraceString(e));
+        }
+        return secretKeyEntry;
+    }
+
+    static public String getAlias (Context ctx) {
+        String str = null;
+        try {
+            PackageManager pm = ctx.getPackageManager();
+            String pn = ctx.getPackageName().toString();
+            ApplicationInfo appInfo = pm.getApplicationInfo(pn, 0);
+            String appFile = appInfo.sourceDir;
+            long installed = new File(appFile).lastModified();
+            str = pn + "_" + installed;
+        } catch (Exception e) {
+            Log.e("CREATE", Log.getStackTraceString(e));
+        }
+        return str;
+    }
 
     private static void encryptString(Context ctx, String alias, String text) {
         try {
@@ -99,10 +126,8 @@ public abstract class DataBase extends RoomDatabase {
     public static String decryptString(Context ctx, String alias) {
         String str = null;
         try {
-            KeyStore keyStore = KeyStore.getInstance(keyStoreInstance);
-            keyStore.load(null);
-
-            KeyStore.SecretKeyEntry secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null);
+            KeyStore.SecretKeyEntry secretKeyEntry = getSecretKeyEntry(alias);
+            if (null == secretKeyEntry) return null;
 
             SecretKey secretKey = secretKeyEntry.getSecretKey();
 
@@ -128,25 +153,21 @@ public abstract class DataBase extends RoomDatabase {
     }
 
     public static DataBase getDatabase(Context context, String passPhrase) {
+        prefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+        if (INSTANCE == null && prefs.getBoolean("first", true) && null == passPhrase) return null;
         try {
-            PackageManager pm = context.getPackageManager();
-            String pn = context.getPackageName().toString();
-            ApplicationInfo appInfo = pm.getApplicationInfo(pn, 0);
-            String appFile = appInfo.sourceDir;
-            long installed = new File(appFile).lastModified();
-
-            prefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
 
             if (prefs.getBoolean("first", true) && null != passPhrase) {
-                encryptString(context, pn + "_" + installed, passPhrase);
+                encryptString(context, getAlias(context), passPhrase);
             }
 
-            KeyStore keyst = KeyStore.getInstance(keyStoreInstance);
-            keyst.load(null, null);
+//            KeyStore keyst = KeyStore.getInstance(keyStoreInstance);
+//            keyst.load(null, null);
+//
+//            List<String> keystlist = Collections.list(keyst.aliases());
 
-            List<String> keystlist = Collections.list(keyst.aliases());
+            String str = decryptString(context, getAlias(context));
 
-            String str = decryptString(context, pn + "_" + installed);
             if (INSTANCE == null) {
                 SafeHelperFactory factory=SafeHelperFactory.fromUser(Editable.Factory.getInstance().newEditable(str));
                 INSTANCE = Room.databaseBuilder(context, DataBase.class, "users").openHelperFactory(factory).allowMainThreadQueries().build();

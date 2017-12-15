@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.support.v4.app.NotificationManagerCompat;
 import android.telephony.TelephonyManager;
 
+import java.security.KeyStore;
+
+import com.callerid.db.DataBase;
+
 import java.util.Date;
 
 //import android.widget.Toast;
@@ -21,6 +25,9 @@ public abstract class MainService extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        KeyStore.SecretKeyEntry secretKeyEntry = DataBase.getSecretKeyEntry(DataBase.getAlias(context));
+        if (null == secretKeyEntry) return;
 
         //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {

@@ -34,7 +34,6 @@ public class CallReceiver extends MainService {
         public void run()
         {
 
-            System.out.println("LALALALALALLALA");
             if (isCallingEnded) { // hack (connected with delay)
                 isCallingEnded = false;
             } else {

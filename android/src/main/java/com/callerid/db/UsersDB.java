@@ -12,8 +12,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-//import android.widget.Toast;
-
+import android.widget.Toast;
 
 public class UsersDB extends ReactContextBaseJavaModule {
 
@@ -44,6 +43,7 @@ public class UsersDB extends ReactContextBaseJavaModule {
             long endTime = System.nanoTime();
             long duration = (endTime - startTime);
 //            Toast.makeText(getReactApplicationContext(), "Users added to DB. Duration: " + (duration / 1000000) + " msec", Toast.LENGTH_LONG).show();
+            Toast.makeText(getReactApplicationContext(), "Users added to DB", Toast.LENGTH_LONG).show();
             callback.invoke();
         } catch (JSONException e) {
             e.printStackTrace();
