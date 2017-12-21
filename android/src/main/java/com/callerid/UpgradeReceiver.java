@@ -8,6 +8,9 @@ import android.net.Uri;
 import java.io.File;
 
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+
+import com.callerid.db.DataBase;
 
 public class UpgradeReceiver extends BroadcastReceiver {
 
@@ -15,9 +18,13 @@ public class UpgradeReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Uri packageName = intent.getData();
         if (packageName.toString().equals("package:" + context.getPackageName())) {
-            SharedPreferences prefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
-            prefs.edit().putBoolean("first", true).commit();
-            Toast.makeText(context, "Open app for the Caller-ID to work with " + context.getPackageName(), Toast.LENGTH_LONG).show();
+            ApplicationInfo applicationInfo = context.getApplicationInfo();
+            int stringId = applicationInfo.labelRes;
+            String name;
+            if(stringId == 0) name = applicationInfo.nonLocalizedLabel.toString();
+            else name = context.getString(stringId);
+            DataBase dataBase = DataBase.getDatabase(context, null); // for first call
+            if(null == dataBase) Toast.makeText(context, "Open app for the Caller-ID to work with " + name, Toast.LENGTH_LONG).show();
         }
     }
 }

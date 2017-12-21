@@ -18,18 +18,20 @@ import javax.crypto.CipherOutputStream;
 import android.util.Base64;
 import android.util.Log;
 import android.security.KeyPairGeneratorSpec;
-import 	java.security.KeyPair;
-import 		java.security.KeyPairGenerator;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import javax.security.auth.x500.X500Principal;
 import java.security.interfaces.RSAPrivateKey;
-import 	javax.crypto.CipherInputStream;
-import 	javax.crypto.KeyGenerator;
-import 	android.security.keystore.KeyProperties;
-import 	android.security.keystore.KeyGenParameterSpec;
+import javax.crypto.CipherInputStream;
+import javax.crypto.KeyGenerator;
+import android.security.keystore.KeyProperties;
+import android.security.keystore.KeyGenParameterSpec;
 import javax.crypto.SecretKey;
-import 	javax.crypto.spec.GCMParameterSpec;
-import 	android.content.SharedPreferences;
-//import 	org.apache.commons.codec.binary.Hex;
+import javax.crypto.spec.GCMParameterSpec;
+import android.content.SharedPreferences;
+import java.security.KeyStore;
+import java.io.ByteArrayInputStream;
+//import org.apache.commons.codec.binary.Hex;
 
 import java.io.File;
 import java.util.Set;
@@ -39,6 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import android.util.Base64;
 import java.math.BigInteger;
 
@@ -52,6 +55,7 @@ public abstract class DataBase extends RoomDatabase {
     private static final String keyStoreInstance = "AndroidKeyStore";
     private static final String cipherInstance = "AES/GCM/NoPadding";
     private static SharedPreferences prefs = null;
+    private static String TAG = "DB";
 
     //    private final static String generateRandomChars(String candidateChars, int length) {
 //        StringBuilder sb = new StringBuilder();
@@ -63,20 +67,34 @@ public abstract class DataBase extends RoomDatabase {
 //
 //        return sb.toString();
 //    }
-    static public KeyStore.SecretKeyEntry getSecretKeyEntry (String alias) {
-        KeyStore.SecretKeyEntry secretKeyEntry = null;
-        try {
-            KeyStore keyStore = KeyStore.getInstance(keyStoreInstance);
-            keyStore.load(null);
+//    static public KeyStore.SecretKeyEntry getSecretKeyEntry (String alias) {
+//        KeyStore.SecretKeyEntry secretKeyEntry = null;
+//        try {
+//            KeyStore keyStore = KeyStore.getInstance(keyStoreInstance);
+//            keyStore.load(null);
+//
+//            secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null);
+//        } catch (Exception e) {
+//            Log.e("Exception", Log.getStackTraceString(e));
+//        }
+//        return secretKeyEntry;
+//    }
 
-            secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null);
+
+    public static KeyStore.PrivateKeyEntry getPrivateKeyEntry (String alias) {
+        KeyStore.PrivateKeyEntry privateKeyEntry = null;
+        try {
+            KeyStore keystore = KeyStore.getInstance(keyStoreInstance);
+            keystore.load(null);
+
+            privateKeyEntry = (KeyStore.PrivateKeyEntry) keystore.getEntry(alias, null);
         } catch (Exception e) {
-            Log.e("Exception", Log.getStackTraceString(e));
+            Log.e(TAG, Log.getStackTraceString(e));
         }
-        return secretKeyEntry;
+        return privateKeyEntry;
     }
 
-    static public String getAlias (Context ctx) {
+    public static String getAlias (Context ctx) {
         String str = null;
         try {
             PackageManager pm = ctx.getPackageManager();
@@ -86,95 +104,175 @@ public abstract class DataBase extends RoomDatabase {
             long installed = new File(appFile).lastModified();
             str = pn + "_" + installed;
         } catch (Exception e) {
-            Log.e("CREATE", Log.getStackTraceString(e));
+            Log.e(TAG, Log.getStackTraceString(e));
         }
         return str;
     }
 
-    private static void encryptString(Context ctx, String alias, String text) {
+    //    private static void encryptString(Context ctx, String alias, String text) {
+//        try {
+//            final KeyGenerator keyGenerator = KeyGenerator
+//                    .getInstance(KeyProperties.KEY_ALGORITHM_AES, keyStoreInstance);
+//
+//            final KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(alias,
+//                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+//                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+//                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+//                    .build();
+//
+//            keyGenerator.init(keyGenParameterSpec);
+//            final SecretKey secretKey = keyGenerator.generateKey();
+//
+//            Cipher cipher = Cipher.getInstance(cipherInstance);
+//            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+//            byte[] iv = cipher.getIV();
+//            byte[] encryption = cipher.doFinal(text.getBytes("UTF-8"));
+//
+//            String ivStr = Base64.encodeToString(iv, Base64.DEFAULT);
+//            String encStr = Base64.encodeToString(encryption, Base64.DEFAULT);
+//
+//            prefs.edit().putString("hash", encStr).commit();
+//            prefs.edit().putString("salt", ivStr).commit();
+//            prefs.edit().putBoolean("first", false).commit();
+//        } catch (Exception e) {
+//            Toast.makeText(ctx, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
+//            Log.e("CREATE", Log.getStackTraceString(e));
+//        }
+//    }
+//
+//    public static String decryptString(Context ctx, String alias) {
+//        String str = null;
+//        try {
+//            KeyStore.SecretKeyEntry secretKeyEntry = getSecretKeyEntry(alias);
+//            if (null == secretKeyEntry) return null;
+//
+//            SecretKey secretKey = secretKeyEntry.getSecretKey();
+//
+//            String strIV = prefs.getString("salt", null);
+//            String strEnc = prefs.getString("hash", null);
+//
+//            byte[] ivB = Base64.decode(strIV, Base64.DEFAULT);
+//            byte[] encB = Base64.decode(strEnc, Base64.DEFAULT);
+//
+//            Cipher cipher = Cipher.getInstance(cipherInstance);
+//            GCMParameterSpec spec = new GCMParameterSpec(128, ivB);
+//            cipher.init(Cipher.DECRYPT_MODE, secretKey, spec);
+//
+//            byte[] decodedData = cipher.doFinal(encB);
+//
+//            str = new String(decodedData, "UTF-8");
+//
+//        } catch (Exception e) {
+//            Toast.makeText(ctx, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
+//            Log.e("Exception", Log.getStackTraceString(e));
+//        }
+//        return str;
+//    }
+//
+    private static void encryptString_old(Context ctx, String alias, String text) {
         try {
-            final KeyGenerator keyGenerator = KeyGenerator
-                    .getInstance(KeyProperties.KEY_ALGORITHM_AES, keyStoreInstance);
+            KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKeyEntry(alias);
+            if (null == privateKeyEntry) return;
 
-            final KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(alias,
-                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                    .build();
+            RSAPublicKey publicKey = (RSAPublicKey) privateKeyEntry.getCertificate().getPublicKey();
 
-            keyGenerator.init(keyGenParameterSpec);
-            final SecretKey secretKey = keyGenerator.generateKey();
+            if(text.isEmpty()) {
+                Toast.makeText(ctx, "Enter text in the 'Initial Text' widget", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-            Cipher cipher = Cipher.getInstance(cipherInstance);
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] iv = cipher.getIV();
-            byte[] encryption = cipher.doFinal(text.getBytes("UTF-8"));
+            Cipher input = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            input.init(Cipher.ENCRYPT_MODE, publicKey);
 
-            String ivStr = Base64.encodeToString(iv, Base64.DEFAULT);
-            String encStr = Base64.encodeToString(encryption, Base64.DEFAULT);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            CipherOutputStream cipherOutputStream = new CipherOutputStream(
+                    outputStream, input);
+            cipherOutputStream.write(text.getBytes("UTF-8"));
+            cipherOutputStream.close();
 
+            String encStr = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
             prefs.edit().putString("hash", encStr).commit();
-            prefs.edit().putString("salt", ivStr).commit();
-            prefs.edit().putBoolean("first", false).commit();
         } catch (Exception e) {
             Toast.makeText(ctx, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
-            Log.e("CREATE", Log.getStackTraceString(e));
+            Log.e(TAG, Log.getStackTraceString(e));
         }
     }
 
-
-    public static String decryptString(Context ctx, String alias) {
-        String str = null;
+    private static String decryptString_old(Context ctx, String alias) {
+        String finalText = null;
         try {
-            KeyStore.SecretKeyEntry secretKeyEntry = getSecretKeyEntry(alias);
-            if (null == secretKeyEntry) return null;
+            KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKeyEntry(alias);
+            if (null == privateKeyEntry) return null;
 
-            SecretKey secretKey = secretKeyEntry.getSecretKey();
+            Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            output.init(Cipher.DECRYPT_MODE, privateKeyEntry.getPrivateKey());
 
-            String strIV = prefs.getString("salt", null);
+
             String strEnc = prefs.getString("hash", null);
-
-            byte[] ivB = Base64.decode(strIV, Base64.DEFAULT);
             byte[] encB = Base64.decode(strEnc, Base64.DEFAULT);
 
-            Cipher cipher = Cipher.getInstance(cipherInstance);
-            GCMParameterSpec spec = new GCMParameterSpec(128, ivB);
-            cipher.init(Cipher.DECRYPT_MODE, secretKey, spec);
+            CipherInputStream cipherInputStream = new CipherInputStream(
+                    new ByteArrayInputStream(encB), output);
+            ArrayList<Byte> values = new ArrayList<>();
+            int nextByte;
+            while ((nextByte = cipherInputStream.read()) != -1) {
+                values.add((byte)nextByte);
+            }
 
-            byte[] decodedData = cipher.doFinal(encB);
+            byte[] bytes = new byte[values.size()];
+            for(int i = 0; i < bytes.length; i++) {
+                bytes[i] = values.get(i).byteValue();
+            }
 
-            str = new String(decodedData, "UTF-8");
+            finalText = new String(bytes, 0, bytes.length, "UTF-8");
 
         } catch (Exception e) {
             Toast.makeText(ctx, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
-            Log.e("Exception", Log.getStackTraceString(e));
+            Log.e(TAG, Log.getStackTraceString(e));
         }
-        return str;
+        return finalText;
+    }
+
+    private static KeyPair createNewKeys(Context ctx, String alias) {
+        KeyPair keyPair = null;
+        try {
+            Calendar start = Calendar.getInstance();
+            Calendar end = Calendar.getInstance();
+            end.add(Calendar.YEAR, 1);
+            KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(ctx)
+                    .setAlias(alias)
+                    .setSubject(new X500Principal("CN=" + alias))
+                    .setSerialNumber(BigInteger.ONE)
+                    .setStartDate(start.getTime())
+                    .setEndDate(end.getTime())
+                    .build();
+            KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", keyStoreInstance);
+            generator.initialize(spec);
+            keyPair = generator.generateKeyPair();
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+        return keyPair;
     }
 
     public static DataBase getDatabase(Context context, String passPhrase) {
         prefs = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
-        if (INSTANCE == null && prefs.getBoolean("first", true) && null == passPhrase) return null;
         try {
+            if (null == INSTANCE) {
+                if (prefs.getBoolean("first", true) && null != passPhrase) {
+                    createNewKeys(context, getAlias(context));
+                    encryptString_old(context, getAlias(context), passPhrase);
+                }
 
-            if (prefs.getBoolean("first", true) && null != passPhrase) {
-                encryptString(context, getAlias(context), passPhrase);
-            }
+                String str = decryptString_old(context, getAlias(context));
+                if(null == str) return null;
 
-//            KeyStore keyst = KeyStore.getInstance(keyStoreInstance);
-//            keyst.load(null, null);
-//
-//            List<String> keystlist = Collections.list(keyst.aliases());
-
-            String str = decryptString(context, getAlias(context));
-
-            if (INSTANCE == null) {
                 SafeHelperFactory factory=SafeHelperFactory.fromUser(Editable.Factory.getInstance().newEditable(str));
                 INSTANCE = Room.databaseBuilder(context, DataBase.class, "users").openHelperFactory(factory).allowMainThreadQueries().build();
             }
         } catch (Exception e) {
-            Toast.makeText(context, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+            Log.e(TAG, Log.getStackTraceString(e));
         }
         return INSTANCE;
     }

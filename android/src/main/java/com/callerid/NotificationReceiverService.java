@@ -18,6 +18,7 @@ public class NotificationReceiverService extends NotificationListenerService {
     static boolean isMissed;
     static String name = "Undefined";
     static String number;
+    private boolean dissableNotificationWithVersion = android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
 
 //    private NLServiceReceiver nrec;
 //    private StatusBarNotification incall_sbn;
@@ -57,8 +58,8 @@ public class NotificationReceiverService extends NotificationListenerService {
         }
     }
 
-//    @Override
-//    public void onNotificationRemoved(StatusBarNotification sbn) {
+    @Override
+    public void onNotificationRemoved(StatusBarNotification sbn) {
 //        super.onNotificationRemoved(sbn);
 //        try {
 //            String packageName = sbn.getPackageName();
@@ -80,7 +81,7 @@ public class NotificationReceiverService extends NotificationListenerService {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-//    }
+    }
 
 
     private String locIncomingName (String packageName) {
@@ -106,15 +107,14 @@ public class NotificationReceiverService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        super.onNotificationPosted(sbn);
-
+//        super.onNotificationPosted(sbn);
+        if (dissableNotificationWithVersion) return;
         try {
             String packageName = sbn.getPackageName();
 
             if (packageName.indexOf("incallui") > 0 || packageName.indexOf("dialer") > 0) {
 
                 Bundle extras = sbn.getNotification().extras;
-
                 Resources res = context.getPackageManager().getResourcesForApplication(packageName);
 
                 int incomingResId = res.getIdentifier(locIncomingName(packageName), "string", packageName);

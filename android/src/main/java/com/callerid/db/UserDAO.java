@@ -32,7 +32,7 @@ public interface UserDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addUsers(List<User> users);
 
-    @Query("select * from users where number = :number Limit 1")
+    @Query("select * from users where number = :number or i164 = :number Limit 1")
     public User getUserByNumber(String number);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

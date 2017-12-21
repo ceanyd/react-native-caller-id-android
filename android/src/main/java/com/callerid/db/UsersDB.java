@@ -28,22 +28,27 @@ public class UsersDB extends ReactContextBaseJavaModule {
     @ReactMethod
     public void upload(String options, String passPhrase, Callback callback) {
         try {
-            long startTime = System.nanoTime();
+//            long startTime = System.nanoTime();
             List<User> newUsers = new ArrayList<>();
             JSONArray arr = new JSONArray(options);
             DataBase database = DataBase.getDatabase(getReactApplicationContext(), passPhrase);
+            if(null == database) {
+                callback.invoke(new JSONException("Caller-ID database cannot be created"));
+                return;
+            }
             database.userDao().removeAllUsers();
             for (int i=0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
                 String name = o.getString("name");
                 String number = o.getString("number");
-                newUsers.add(new User(name, number));
+                String i164 = o.getString("i164");
+                newUsers.add(new User(name, number, i164));
             }
             database.userDao().addUsers(newUsers);
-            long endTime = System.nanoTime();
-            long duration = (endTime - startTime);
+//            long endTime = System.nanoTime();
+//            long duration = (endTime - startTime);
 //            Toast.makeText(getReactApplicationContext(), "Users added to DB. Duration: " + (duration / 1000000) + " msec", Toast.LENGTH_LONG).show();
-            Toast.makeText(getReactApplicationContext(), "Users added to DB", Toast.LENGTH_LONG).show();
+            Toast.makeText(getReactApplicationContext(), "Users added to Caller-ID", Toast.LENGTH_LONG).show();
             callback.invoke();
         } catch (JSONException e) {
             e.printStackTrace();

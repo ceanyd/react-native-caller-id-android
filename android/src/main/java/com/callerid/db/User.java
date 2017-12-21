@@ -16,6 +16,9 @@ public class User {
     @ColumnInfo(name = "number")
     public String number;
 
+    @ColumnInfo(name = "i164")
+    public String i164;
+
 //    public int getId() {
 //        return id;
 //    }
@@ -40,9 +43,10 @@ public class User {
 //        this.number = _number;
 //    }
 
-    public User(String name, String number) {
+    public User(String name, String number, String i164) {
         this.name = name;
         this.number = number;
+        this.i164 = i164;
     }
 
 
