@@ -29,7 +29,8 @@
         </activity>
         <receiver
             android:name=".CallReceiver"
-            android:exported="false"
+            android:enabled="true"
+            android:exported="true"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -43,14 +44,14 @@
         </receiver>
         <service
             android:name=".NotificationReceiverService"
-            android:exported="false"
+            android:enabled="true"
+            android:exported="true"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-        <receiver android:name=".InCallManager"
-            android:exported="false">
+        <receiver android:name=".InCallManager">
             <intent-filter>
                 <action android:name="ANSWER" />
                 <action android:name="DISMISS" />
