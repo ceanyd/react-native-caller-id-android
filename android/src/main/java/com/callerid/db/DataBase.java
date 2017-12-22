@@ -191,7 +191,7 @@ public abstract class DataBase extends RoomDatabase {
             cipherOutputStream.close();
 
             String encStr = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-            prefs.edit().putString("hash", encStr).commit();
+            prefs.edit().putString("hash", encStr).apply();
         } catch (Exception e) {
             Toast.makeText(ctx, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
             Log.e(TAG, Log.getStackTraceString(e));

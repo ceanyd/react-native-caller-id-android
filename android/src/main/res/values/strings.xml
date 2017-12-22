@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">CallerID</string>
-    <string name="action_settings">Settings</string>
+    <string name="rounded_image">rounded_image</string>
+    <string name="btn_mute">btn_mute</string>
+    <string name="btn_mute_text">Mute</string>
+    <string name="btn_decline">btn_decline</string>
+    <string name="btn_decline_text">Decline</string>
+    <string name="btn_answer">btn_answer</string>
+    <string name="btn_answer_text">Accept</string>
+    <string name="btn_speaker">btn_speaker</string>
+    <string name="btn_speaker_text">Speaker</string>
 </resources>

@@ -73,10 +73,9 @@ public class CallReceiver extends MainService {
         @Override
         public void run()
         {
-            if(!isAlreadyShownNotification) {
-                CustomNotification notification = new CustomNotification(ctx, name, number);
-                notification.showInc();
-            }
+            CustomNotification notification = new CustomNotification(ctx, name, number);
+            notification.showInc();
+            isAlreadyShownNotification = false;
         }
     }
 
@@ -111,7 +110,9 @@ public class CallReceiver extends MainService {
             }
 
             int delay = 1000;
-            if (isAlreadyShownNotification) delay = 0;
+            if (isAlreadyShownNotification) {
+                delay = 0;
+            }
 
             Handler callActionHandler = new Handler();
             CustomRunnableNotification runRingingActivity = new CustomRunnableNotification();

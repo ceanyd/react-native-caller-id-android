@@ -14,7 +14,7 @@ import android.service.notification.StatusBarNotification;
 public class NotificationReceiverService extends NotificationListenerService {
 
     Context context;
-    static boolean isCallIn;
+    public static boolean isCallIn;
     static boolean isMissed;
     static String name = "Undefined";
     static String number;
@@ -135,6 +135,7 @@ public class NotificationReceiverService extends NotificationListenerService {
                         });
                     }
                 } else if (missingExtraText.equals(extras.getString(Notification.EXTRA_TEXT)) | missingExtraText.equals(extras.getString(Notification.EXTRA_TITLE))) {
+
                     if(isMissed) {
                         isMissed = false;
                         new Handler(Looper.getMainLooper()).post(new Runnable() {

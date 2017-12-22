@@ -21,6 +21,8 @@ public class CustomNotification {
     private String n;
     private String num;
 
+    private static boolean isFirstInc;
+
     public CustomNotification(Context context, String name, String number) {
         ctx = context;
         n = name;
@@ -44,6 +46,7 @@ public class CustomNotification {
     }
 
     public void showInc() {
+        if(isFirstInc) return;
         Intent dialIntent = new Intent(ctx, DialActivity.class);
         dialIntent.putExtra("incomingnumber", num);
         dialIntent.putExtra("incomingname", n);
@@ -75,7 +78,7 @@ public class CustomNotification {
         notifBuilder.setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.mipmap.ic_launcher))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH) // need NotificationManager.IMPORTANCE_HIGH for 26 API
-                .setCategory(Notification.CATEGORY_CALL)
+//                .setCategory(Notification.CATEGORY_CALL)
                 .setFullScreenIntent(intent1, true)
 
                 .addAction(dismissAction)
@@ -95,6 +98,7 @@ public class CustomNotification {
 
 //        notifBuilder.flags = android.app.Notification.DEFAULT_LIGHTS | android.app.Notification.FLAG_AUTO_CANCEL;
 
+        isFirstInc = true;
         notificationManager.notify(766, notifBuilder.build());
     }
 
@@ -121,7 +125,7 @@ public class CustomNotification {
         notifBuilder.setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.mipmap.ic_launcher))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setCategory(Notification.CATEGORY_CALL)
+//                .setCategory(Notification.CATEGORY_CALL)
 //                .setFullScreenIntent(intent1, true)
 
                 .addAction(dismissAction)
@@ -169,7 +173,7 @@ public class CustomNotification {
         notifBuilder.setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(), R.mipmap.ic_launcher))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setCategory(Notification.CATEGORY_CALL)
+//                .setCategory(Notification.CATEGORY_CALL)
 
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle(n)
@@ -194,5 +198,6 @@ public class CustomNotification {
     static public void cancel(Context ctx) {
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(766);
+        isFirstInc = false;
     }
 }

@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 <FrameLayout
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="fill_parent">
 
 <View
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey" />
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="65dp"
     android:layout_marginBottom="41dp"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
@@ -34,6 +32,7 @@
             android:layout_marginEnd="12dp"
             app:cardCornerRadius="6dp">
             <ImageView
+                android:contentDescription="@string/rounded_image"
                 android:id="@+id/roundedImageView"
                 android:layout_width="29dp"
                 android:layout_height="29dp"
@@ -53,8 +52,7 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -64,7 +62,6 @@
         android:layout_gravity="center">
         <TextView
             android:id="@+id/nameText"
-            android:text="Aaron Shiner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -72,9 +69,8 @@
             android:textSize="30sp"
             android:textColor="@color/white" />
 
-        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        <TextView
             android:id="@+id/numberText"
-            android:text="0422 989 225"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -82,8 +78,7 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:paddingRight="45dp"
         android:paddingLeft="45dp"
@@ -91,8 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:orientation="vertical"
             android:layout_alignParentStart="true"
@@ -102,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageButton
+                android:contentDescription="@string/btn_decline"
                 android:id="@+id/btnDecline"
                 android:layout_marginBottom="13dp"
                 android:layout_width="86dp"
@@ -110,7 +105,7 @@
                 android:src="@drawable/decline_call_iconx5"/>
             <TextView
                 android:id="@+id/declineText"
-                android:text="Decline"
+                android:text="@string/btn_decline_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -119,8 +114,7 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:orientation="vertical"
             android:layout_alignParentEnd="true"
@@ -130,6 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageButton
+                android:contentDescription="@string/btn_answer"
                 android:id="@+id/btnAnswer"
                 android:layout_marginBottom="13dp"
                 android:layout_width="86dp"
@@ -138,7 +133,7 @@
                 android:src="@drawable/accept_call_iconx5"/>
             <TextView
                 android:id="@+id/acceptText"
-                android:text="Accept"
+                android:text="@string/btn_answer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -151,3 +146,4 @@
 </RelativeLayout>
 
 </FrameLayout>
+</merge>

@@ -1,8 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.callerid"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="com.callerid">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -12,10 +9,6 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
-    <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="23" />
 
     <application
       android:allowBackup="true"
@@ -36,8 +29,7 @@
         </activity>
         <receiver
             android:name=".CallReceiver"
-            android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -51,14 +43,14 @@
         </receiver>
         <service
             android:name=".NotificationReceiverService"
-            android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-        <receiver android:name=".InCallManager">
+        <receiver android:name=".InCallManager"
+            android:exported="false">
             <intent-filter>
                 <action android:name="ANSWER" />
                 <action android:name="DISMISS" />
