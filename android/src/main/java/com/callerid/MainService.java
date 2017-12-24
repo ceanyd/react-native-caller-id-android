@@ -27,7 +27,6 @@ public abstract class MainService extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         KeyStore.PrivateKeyEntry privateKeyEntry = DataBase.getPrivateKeyEntry(DataBase.getAlias(context));
-//        System.out.println("P R I V A T E  K E Y : " + privateKeyEntry);
         if (null == privateKeyEntry) return;
 
         //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.

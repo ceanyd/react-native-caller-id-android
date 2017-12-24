@@ -160,11 +160,6 @@ public class NotificationReceiverService extends NotificationListenerService {
 //        @Override
 //        public void onReceive(Context context, Intent intent) {
 //            if(intent.getStringExtra("action").equals("CLEAR_NOTIFICATIONS")) {
-//                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-//                System.out.println(intent.getStringExtra("action"));
-//                System.out.println(intent.getStringExtra("action").equals("CLEAR_NOTIFICATIONS"));
-//                System.out.println(incall_sbn.getKey());
-//                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
 //                Toast.makeText(context, "CLEARING NOTIFICATIONS", Toast.LENGTH_SHORT).show();
 //                cancelNotification(incall_sbn.getKey());
 //            }
