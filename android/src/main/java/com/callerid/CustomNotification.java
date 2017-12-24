@@ -21,8 +21,6 @@ public class CustomNotification {
     private String n;
     private String num;
 
-    private static boolean isFirstInc;
-
     public CustomNotification(Context context, String name, String number) {
         ctx = context;
         n = name;
@@ -46,7 +44,6 @@ public class CustomNotification {
     }
 
     public void showInc() {
-        if(isFirstInc) return;
         Intent dialIntent = new Intent(ctx, DialActivity.class);
         dialIntent.putExtra("incomingnumber", num);
         dialIntent.putExtra("incomingname", n);
@@ -98,7 +95,6 @@ public class CustomNotification {
 
 //        notifBuilder.flags = android.app.Notification.DEFAULT_LIGHTS | android.app.Notification.FLAG_AUTO_CANCEL;
 
-        isFirstInc = true;
         notificationManager.notify(766, notifBuilder.build());
     }
 
@@ -198,6 +194,5 @@ public class CustomNotification {
     static public void cancel(Context ctx) {
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(766);
-        isFirstInc = false;
     }
 }
