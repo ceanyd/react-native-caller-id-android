@@ -13,7 +13,7 @@ const callerId = {
           res(isGranted);
           isGranted && !access &&
           Alert.alert("Notification access",
-              "For proper work of Caller ID the application needs access to be given in settings",
+              "To complete setup for LockedOn Caller ID, you need to enable Notification Access in Settings. Click OK to do this now.",
               [{text: "Ok",
                 onPress: () => NativeModules.AddPermissions.notificationsAccess()}],
               { cancelable: false });
